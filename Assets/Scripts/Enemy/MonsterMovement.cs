@@ -1,13 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class MonsterMovement : MonoBehaviour
 {
     public Transform player;
     public float moveTime = 5f;
-    public Text timerText;
+    public TMP_Text timerText;
+    private RectTransform dynamicTextRectTransform;
+    private Camera mainCamera;
+
+    void Start()
+    {
+        mainCamera = Camera.main;
+        dynamicTextRectTransform = timerText.GetComponent<RectTransform>();
+    }
 
     private void Update()
     {
@@ -16,6 +24,8 @@ public class MonsterMovement : MonoBehaviour
         {
             StartCoroutine(MoveToPlayer());
         }
+
+        UpdateTextPosition();
     }
 
     IEnumerator MoveToPlayer()
@@ -33,10 +43,31 @@ public class MonsterMovement : MonoBehaviour
             float remainingTime = moveTime - t;
             int seconds = Mathf.RoundToInt(remainingTime);
             timerText.text = seconds.ToString();
+            //Debug.Log("Текст обновлен: " + timerText.text);
 
             yield return null;
         }
 
         transform.position = targetPosition;
+    }
+
+    void UpdateTextPosition()
+    {
+        if (mainCamera != null)
+        {
+            // Получаем позицию игрового объекта в экранных координатах
+            Vector3 gameObjScreenPos = mainCamera.WorldToScreenPoint(transform.position);
+
+            // Преобразуем экранные координаты в локальные координаты Canvas
+            Vector2 localPoint;
+            RectTransform canvasRectTransform = timerText.canvas.GetComponent<RectTransform>();
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, gameObjScreenPos, mainCamera, out localPoint);
+
+            float offsetY = 100.0f; // Пример смещения
+            float offsetX = 100.0f; // Пример смещения
+
+            // Устанавливаем позицию текста относительно Canvas
+            dynamicTextRectTransform.anchoredPosition = new Vector2(localPoint.x + offsetX, localPoint.y + timerText.preferredHeight + offsetY);
+        }
     }
 }
