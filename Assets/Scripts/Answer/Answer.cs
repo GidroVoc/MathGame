@@ -10,17 +10,16 @@ public class MathSimulator : MonoBehaviour
     public Text correctAnswerText;
     public Text correctAnswerOutputText;
     public Text incorrectAnswerOutputText;
-    public GameObject monster;
+    public GameObject enemy;
+    [SerializeField] public string spriteName;
 
-    private string correctAnswer;
+    [SerializeField] private string correctAnswer;
     private string playerAnswer;
 
     void Start()
     {
         // Загрузка первой картинки
-        questionImage.sprite = Resources.Load<Sprite>("Question1");
-        correctAnswer = "150";
-        correctAnswerText.text = correctAnswer;
+        Qustion();
     }
 
     void Update()
@@ -32,7 +31,7 @@ public class MathSimulator : MonoBehaviour
             {
                 StartCoroutine(ShowTextThenHide1(correctAnswerOutputText));
                 incorrectAnswerOutputText.text = "";
-                Destroy(monster);
+                Destroy(enemy);
             }
             else
             {
@@ -45,6 +44,12 @@ public class MathSimulator : MonoBehaviour
         }
     }
 
+    public void Qustion()
+    {
+        questionImage.sprite = Resources.Load<Sprite>(spriteName);
+        correctAnswerText.text = correctAnswer;
+    }
+
     private IEnumerator ShowTextThenHide1(Text textComponent)
     {
         textComponent.text = "Правильно!";
@@ -52,9 +57,9 @@ public class MathSimulator : MonoBehaviour
         textComponent.text = "";
 
         // Переход к следующему вопросу
-        questionImage.sprite = Resources.Load<Sprite>("Question2");
-        correctAnswer = "22";
-        correctAnswerText.text = correctAnswer;
+        //questionImage.sprite = Resources.Load<Sprite>("Question2");
+        //correctAnswer = "22";
+        //correctAnswerText.text = correctAnswer
     }
 
     private IEnumerator ShowTextThenHide2(Text textComponent)
