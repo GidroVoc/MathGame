@@ -58,10 +58,6 @@ public class MathSimulator : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         textComponent.text = "";
         Destroy(enemy);
-        // Переход к следующему вопросу
-        //questionImage.sprite = Resources.Load<Sprite>("Question2");
-        //correctAnswer = "22";
-        //correctAnswerText.text = correctAnswer
     }
 
     private IEnumerator Incorrect(Text textComponent)
