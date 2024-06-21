@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MathSimulator : MonoBehaviour
 {
     public Image questionImage;
+    public Image bigQuestionImage;
     public InputField playerAnswerInputField;
     public Text correctAnswerText;
     public Text correctAnswerOutputText;
@@ -29,14 +30,14 @@ public class MathSimulator : MonoBehaviour
             playerAnswer = playerAnswerInputField.text;
             if (playerAnswer == correctAnswer)
             {
-                StartCoroutine(ShowTextThenHide1(correctAnswerOutputText));
                 incorrectAnswerOutputText.text = "";
-                Destroy(enemy);
+                StartCoroutine(Correct(correctAnswerOutputText));
+                
             }
             else
             {
                 correctAnswerOutputText.text = "";
-                StartCoroutine(ShowTextThenHide2(incorrectAnswerOutputText));
+                StartCoroutine(Incorrect(incorrectAnswerOutputText));
             }
 
             // Сброс текста InputField после нажатия кнопки Enter
@@ -47,22 +48,23 @@ public class MathSimulator : MonoBehaviour
     public void Qustion()
     {
         questionImage.sprite = Resources.Load<Sprite>(spriteName);
+        bigQuestionImage.sprite = Resources.Load<Sprite>(spriteName);
         correctAnswerText.text = correctAnswer;
     }
 
-    private IEnumerator ShowTextThenHide1(Text textComponent)
+    private IEnumerator Correct(Text textComponent)
     {
         textComponent.text = "Правильно!";
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
         textComponent.text = "";
-
+        Destroy(enemy);
         // Переход к следующему вопросу
         //questionImage.sprite = Resources.Load<Sprite>("Question2");
         //correctAnswer = "22";
         //correctAnswerText.text = correctAnswer
     }
 
-    private IEnumerator ShowTextThenHide2(Text textComponent)
+    private IEnumerator Incorrect(Text textComponent)
     {
         textComponent.text = "Неправильно. Попробуй ещё раз!";
         yield return new WaitForSeconds(3f);

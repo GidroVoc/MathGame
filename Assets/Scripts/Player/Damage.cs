@@ -11,6 +11,7 @@ public class HealthSystem : MonoBehaviour
     public Animator healthAnimator1;
     public Animator healthAnimator2;
     public Animator healthAnimator3;
+    private AudioSource audioSourse;
 
     private int _hitCount = 0;
     private List<GameObject> _monsters = new List<GameObject>();
@@ -27,10 +28,12 @@ public class HealthSystem : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        { audioSourse = GetComponent<AudioSource>(); }
         if (collision.gameObject.CompareTag("Monster"))
         {
+            audioSourse.Play();
             _hitCount++;
-            Debug.Log("Привет");
+            //Debug.Log("Привет");
 
             switch (_hitCount)
             {
