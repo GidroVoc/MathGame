@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
-    public bool alive;
     public GameObject firstHeart;
     public GameObject secondHeart;
     public GameObject thirdHeart;
@@ -12,28 +11,29 @@ public class HealthSystem : MonoBehaviour
     public Animator healthAnimator1;
     public Animator healthAnimator2;
     public Animator healthAnimator3;
-    private UIManager uiManager;
+    private AudioSource audioSourse;
 
     private int _hitCount = 0;
     private List<GameObject> _monsters = new List<GameObject>();
 
     public void Awake()
     {
-        alive = true;
         // Находим все объекты с тегом "Monster" и добавляем их в список
         GameObject[] monsterObjects = GameObject.FindGameObjectsWithTag("Monster");
         foreach (GameObject monster in monsterObjects)
         {
             _monsters.Add(monster);
         }
-        uiManager = FindObjectOfType<UIManager>();
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        { audioSourse = GetComponent<AudioSource>(); }
         if (collision.gameObject.CompareTag("Monster"))
         {
+            audioSourse.Play();
             _hitCount++;
+            //Debug.Log("Привет");
 
             switch (_hitCount)
             {
@@ -69,8 +69,6 @@ public class HealthSystem : MonoBehaviour
                     {
                         _monsters.Add(monster);
                     }
-                    alive = false;
-                    uiManager.DeadScreen();
                     break;
             }
 
