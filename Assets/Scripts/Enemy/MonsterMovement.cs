@@ -6,7 +6,7 @@ using TMPro;
 public class MonsterMovement : MonoBehaviour
 {
     public Transform player;
-    public float moveTime = 5f;
+    [SerializeField] public float moveTime = 5f;
     public TMP_Text timerText;
     private RectTransform dynamicTextRectTransform;
     private Camera mainCamera;
